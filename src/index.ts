@@ -1,4 +1,8 @@
-import { setCanvasSize } from "./utils/functions/canvas.functions";
+import { PixelEffect } from "./utils/classes/effects/pixel-effect.class";
+import {
+  get2DContext,
+  setCanvasSize,
+} from "./utils/functions/canvas.functions";
 import { error, log } from "./utils/functions/console.functions";
 import {
   addClass,
@@ -26,6 +30,7 @@ const imageMetrics = {
 };
 
 const canvas: HTMLCanvasElement = selectQuery(".index__canvas");
+const context: CanvasRenderingContext2D = get2DContext(canvas);
 
 inputFileUpload.addEventListener("change", handleFileUpload);
 
@@ -84,8 +89,9 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
       throw "File dropped is not an image!";
     }
     log(fileDropped);
-    const base64String = await fileToBase64String(fileDropped);
-    setImageSource(base64String);
+    const base64String: string = await fileToBase64String(fileDropped);
+    await setImageSource(base64String);
+    hideDropzone();
   } catch (fileDropError) {
     error("File drop error:", { fileDropError });
     addClass(labelDropzone, "invalid-drop");
@@ -121,9 +127,10 @@ async function handleFileUpload(event: Event): Promise<void> {
       addClass(labelDropzone, "invalid-img-upload");
       throw "File uploaded is not an image!";
     }
-    //@ts-ignore
-    const base64String = await fileToBase64String(fileUploaded);
-    setImageSource(base64String);
+
+    const base64String: string = await fileToBase64String(fileUploaded);
+    await setImageSource(base64String);
+    hideDropzone();
   } catch (fileUploadError) {
     error("File upload error:", { fileUploadError });
   } finally {
@@ -136,13 +143,15 @@ async function handleFileUpload(event: Event): Promise<void> {
  *
  * @param {string} base64String - The base64 encoded image string
  *
- * @returns {void} A promise that resolves when the image is loaded and the width and height are logged
+ * @returns {Promise<void>} A promise that resolves when the image is loaded and the width and height are logged
  */
-function setImageSource(base64String: string): void {
+async function setImageSource(base64String: string): Promise<void> {
   imageToDraw.src = base64String;
 
   imageToDraw.addEventListener("load", setCanvasSizeToImage);
 }
+
+let effectHandler = new PixelEffect(canvas, imageToDraw);
 
 /**
  * Sets the size of the canvas to match the dimensions of the given image
@@ -154,12 +163,16 @@ function setImageSource(base64String: string): void {
 function setCanvasSizeToImage(event: Event): void {
   //@ts-ignore
   const { width, height } = event.currentTarget;
+
   imageMetrics.width = width;
   imageMetrics.height = height;
 
   imageMetrics.aspectRatio = width / height;
 
   setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+  log(imageMetrics);
+
+  effectHandler.createImage();
 }
 
 window.addEventListener("resize", handleWindowResize);
@@ -173,4 +186,9 @@ window.addEventListener("resize", handleWindowResize);
  */
 function handleWindowResize(event: Event): void {
   log("changed width");
+}
+
+function hideDropzone() {
+  removeClass(labelDropzone, "dragging");
+  addClass(labelDropzone, "hide");
 }
