@@ -40,9 +40,30 @@
 
 <body>
     <header class="header">
+        <svg class="hide header__svg-filters"></svg>
         <h1 class="header__title" title="Pixel image rain">Pixel image rain</h1>
     </header>
     <main class="index">
+
+        <section class="index__container">
+            <label class="index__label" for="input" title="Upload or drop an image">
+                <svg class="index__svg no-pointer-events" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
+                    viewBox="0 0 64 64" id="upload">
+                    <polyline fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="4"
+                        points="13.87 34 31.87 16 49.87 34">
+                    </polyline>
+                    <line x1="31.87" x2="31.87" y1="64" y2="16" fill="none" stroke="currentColor" stroke-miterlimit="10"
+                        stroke-width="4">
+                    </line>
+                    <line x1="50.13" x2="14.13" y1="3" y2="3" fill="none" stroke="currentColor" stroke-miterlimit="10"
+                        stroke-width="4">
+                    </line>
+                </svg>
+            </label>
+            <input class="index__input screen-readers-only" type="file" id="input">
+
+            <canvas class="index__canvas"></canvas>
+        </section>
 
     </main>
     <footer class="footer">

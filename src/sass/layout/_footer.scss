@@ -1,0 +1,10 @@
+@use "../utils/" as *;
+
+.footer {
+    background-color: var(--bg-primary);
+    color: var(--color-primary);
+
+    border-top: 2px solid currentColor;
+
+    padding: 20px;
+}
