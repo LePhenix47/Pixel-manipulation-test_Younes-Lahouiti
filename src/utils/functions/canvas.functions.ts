@@ -1,6 +1,8 @@
 /**
  * Gets the 2D rendering context for a given HTML canvas element.
+ *
  * @param {HTMLCanvasElement} canvas - The HTML canvas element.
+ *
  * @returns {CanvasRenderingContext2D } The 2D rendering context for the canvas.
  */
 export function get2DContext(
@@ -11,6 +13,7 @@ export function get2DContext(
 
 /**
  * Set the width and height of a canvas element.
+ *
  * @param {HTMLCanvasElement} canvas - The HTML canvas element.
  * @param {number} width - The new width of the canvas.
  * @param {number} height - The new height of the canvas.
@@ -150,4 +153,22 @@ export function clearOldPaint(
   canvasHeight: number
 ): void {
   canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+}
+
+/**
+ * Redraws the canvas with a semi-transparent black fill
+ *
+ * @param {CanvasRenderingContext2D} canvasContext - The 2D context of the canvas to redraw
+ * @param {number} canvasWidth - The width of the canvas to redraw
+ * @param {number} canvasHeight - The height of the canvas to redraw
+ *
+ *  @returns {void}
+ */
+export function redrawOnOldPaint(
+  canvasContext: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number
+): void {
+  canvasContext.fillStyle = "rgba(0, 0, 0, 10%)";
+  canvasContext.fillRect(0, 0, canvasWidth, canvasHeight);
 }

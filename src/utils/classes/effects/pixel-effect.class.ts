@@ -16,7 +16,12 @@ export class PixelEffect {
   private particlesArray: PixelParticle[];
 
   /**
-   * The pixels data of the canvas.
+   * The pixels data of the canvas containing a `Uint8Clamped` array
+   * An array of unsigned (>=0) short (0-255) clamped integers
+   *
+   * It contains the color 4 values for each pixel using the `rgba()` model in this manner:
+   * `[R,G,B,A,  R,G,B,A,  R,G,B,A...]`
+   *
    * @private
    * @type {ImageData}
    */
