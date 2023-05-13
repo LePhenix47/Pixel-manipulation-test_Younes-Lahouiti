@@ -195,24 +195,50 @@ function handleWindowResize(event: Event): void {
   log("changed width");
 }
 
-function hideDropzone() {
+/**
+ * Hides the dropzone element by adding the "hide" class and removing the "dragging" class.
+ *
+ *  @returns {void}
+ */
+function hideDropzone(): void {
   removeClass(labelDropzone, "dragging");
   addClass(labelDropzone, "hide");
 }
 
-function showDeleteButton() {
+/**
+ * Shows the delete button element by removing the "hide" class.
+ *
+ *  @returns {void}
+ */
+function showDeleteButton(): void {
   removeClass(deleteButton, "hide");
 }
 
-function hideDeleteButton() {
+/**
+ * Hides the delete button element by adding the "hide" class.
+ *
+ *  @returns {void}
+ */
+function hideDeleteButton(): void {
   addClass(deleteButton, "hide");
 }
 
-function showDropzone() {
+/**
+ * Shows the dropzone element by removing the "hide" class.
+ *
+ *  @returns {void}
+ */
+function showDropzone(): void {
   removeClass(labelDropzone, "hide");
 }
 
-function resetDropzone() {
+/**
+ * Resets the dropzone element and related canvas by clearing old paint, setting canvas size to 0, clearing the image src, and hiding the delete button element.
+ * Finally, it shows the dropzone element.
+ *
+ *  @returns {void}
+ */
+function resetDropzone(): void {
   clearOldPaint(context, canvas.width, canvas.height);
   setCanvasSize(canvas, 0, 0);
   imageElement.src = "";
@@ -221,7 +247,12 @@ function resetDropzone() {
   hideDeleteButton();
 }
 
-function animate() {
+/**
+ * Animates the pixels on the canvas using the effect handler and requestAnimationFrame.
+ *
+ *  @returns {void}
+ */
+function animate(): void {
   //We remove old paint
   clearOldPaint(context, canvas.width, canvas.height);
 
@@ -233,6 +264,11 @@ function animate() {
   animationId = requestAnimationFrame(animate);
 }
 
-function cancelAnimation() {
+/**
+ * Cancels the animation frame request with the provided animation ID.
+ *
+ *  @returns {void}
+ */
+function cancelAnimation(): void {
   cancelAnimationFrame(animationId);
 }
