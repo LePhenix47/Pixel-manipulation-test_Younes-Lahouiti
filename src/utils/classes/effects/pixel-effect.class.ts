@@ -2,6 +2,11 @@ import { get2DContext } from "../../functions/canvas.functions";
 import { log } from "../../functions/console.functions";
 import { PixelParticle } from "../particles/pixel-particle.class";
 
+/**
+ * Class that creates the different effects for our image
+ *
+ * @class
+ */
 export class PixelEffect {
   /**
    * An array of pixel particles that make up the image drawn on our canvas
