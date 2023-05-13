@@ -1,3 +1,4 @@
+import { setCanvasSize } from "./utils/functions/canvas.functions";
 import { error, log } from "./utils/functions/console.functions";
 import {
   addClass,
@@ -13,9 +14,18 @@ import {
 } from "./utils/functions/file.functions";
 
 log("Hello world!");
-const inputFileUpload: HTMLInputElement = selectQuery("input");
+const inputFileUpload: HTMLInputElement = selectQuery(".index__input");
 
-const labelDropzone: HTMLLabelElement = selectQuery("label");
+const labelDropzone: HTMLLabelElement = selectQuery(".index__label");
+
+const imageToDraw: HTMLImageElement = selectQuery(".index__image");
+const imageMetrics = {
+  width: 0,
+  height: 0,
+  aspectRatio: 0,
+};
+
+const canvas: HTMLCanvasElement = selectQuery(".index__canvas");
 
 inputFileUpload.addEventListener("change", handleFileUpload);
 
@@ -75,9 +85,11 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
     }
     log(fileDropped);
     const base64String = await fileToBase64String(fileDropped);
+    setImageSource(base64String);
   } catch (fileDropError) {
     error("File drop error:", { fileDropError });
     addClass(labelDropzone, "invalid-drop");
+  } finally {
     removeClass(labelDropzone, "dragging");
   }
 }
@@ -111,8 +123,54 @@ async function handleFileUpload(event: Event): Promise<void> {
     }
     //@ts-ignore
     const base64String = await fileToBase64String(fileUploaded);
+    setImageSource(base64String);
   } catch (fileUploadError) {
     error("File upload error:", { fileUploadError });
+  } finally {
     removeClass(labelDropzone, "dragging");
   }
+}
+
+/**
+ * Sets the base64 string as the source of the image and logs its width and height when it finishes loading
+ *
+ * @param {string} base64String - The base64 encoded image string
+ *
+ * @returns {void} A promise that resolves when the image is loaded and the width and height are logged
+ */
+function setImageSource(base64String: string): void {
+  imageToDraw.src = base64String;
+
+  imageToDraw.addEventListener("load", setCanvasSizeToImage);
+}
+
+/**
+ * Sets the size of the canvas to match the dimensions of the given image
+ *
+ * @param {Event} event - The event object
+ *
+ * @returns {void} Returns nothing
+ */
+function setCanvasSizeToImage(event: Event): void {
+  //@ts-ignore
+  const { width, height } = event.currentTarget;
+  imageMetrics.width = width;
+  imageMetrics.height = height;
+
+  imageMetrics.aspectRatio = width / height;
+
+  setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+}
+
+window.addEventListener("resize", handleWindowResize);
+
+/**
+ * Event listener for window resize events.
+ *
+ * @param {Event} event - The event object
+ *
+ * @returns {void} Returns nothing
+ */
+function handleWindowResize(event: Event): void {
+  log("changed width");
 }
