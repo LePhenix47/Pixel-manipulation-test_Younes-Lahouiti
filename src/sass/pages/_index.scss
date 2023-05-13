@@ -29,21 +29,40 @@
         position: relative;
 
         &::before {
-            content: "Upload an image";
+            content: "Upload or drop an image";
 
             position: absolute;
             top: 15%;
             left: 50%;
 
             translate: -50% 0%;
+            text-align: center;
         }
 
-        &.active {
+        &.dragging {
             color: var(--color-primary);
             border: 2px solid currentColor;
 
             &::before {
-                content: "active";
+                content: "Drop image here";
+            }
+        }
+
+        &.invalid-drop {
+            &::before {
+                content: "Data dropped is not a file!";
+            }
+        }
+
+        &.invalid-img-upload {
+            &::before {
+                content: "File uploaded is not an image!";
+            }
+        }
+
+        &.invalid-img-drop {
+            &::before {
+                content: "File dropped is not an image!";
             }
         }
     }

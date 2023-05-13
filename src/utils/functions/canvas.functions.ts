@@ -134,3 +134,20 @@ export function rotateCanvas(
   canvasContext.translate(startX, startY);
   canvasContext.rotate(rotation);
 }
+
+/**
+ * Clears the previous paint on the canvas by calling `clearRect()` on the given context.
+ *
+ * @param {CanvasRenderingContext2D} canvasContext - The 2D rendering context of the canvas.
+ * @param {number} canvasWidth - The width of the canvas in pixels.
+ * @param {number} canvasHeight - The height of the canvas in pixels.
+ *
+ * @returns {void}
+ */
+export function clearOldPaint(
+  canvasContext: CanvasRenderingContext2D,
+  canvasWidth: number,
+  canvasHeight: number
+): void {
+  canvasContext.clearRect(0, 0, canvasWidth, canvasHeight);
+}
