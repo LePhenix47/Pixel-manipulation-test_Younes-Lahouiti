@@ -82,19 +82,37 @@ export class PixelParticle {
   ease: number;
 
   /**
+   * X coordinate of the mouse over the canvas
+   * @type {number}
+   */
+  mouseX: number;
+  /**
+   * Y coordinate of the mouse over the canvas
+   * @type {number}
+   */
+  mouseY: number;
+  mouseRadius: number;
+
+  /**
    * @param {CanvasRenderingContext2D} context - The canvas rendering context used to draw the particle.
    * @param {number} width - The width of the canvas.
    * @param {number} height - The height of the canvas.
+   * @param {number} mouseX - The mouseX of the canvas.
+   * @param {number} mouseY - The mouseY of the canvas.
    * @param {number} pixelX - The x-coordinate of the pixel in the original image.
    * @param {number} pixelY - The y-coordinate of the pixel in the original image.
    * @param {string} pixelColor - The color of the pixel.
    * @param {number} pixelSize - The size of the pixel.
    * @param {number} [pixelGap=0] - The distance between the pixel and its nearest neighbor.
+   *
+   * @constructor
    */
   constructor(
     context: CanvasRenderingContext2D,
     width: number,
     height: number,
+    mouseX: number,
+    mouseY: number,
     pixelX: number,
     pixelY: number,
     pixelColor: string,
@@ -104,6 +122,10 @@ export class PixelParticle {
     this.context = context;
     this.width = width;
     this.height = height;
+
+    this.mouseX = mouseX;
+    this.mouseY = mouseY;
+    this.mouseRadius = 20_000;
 
     this.originX = pixelX;
     this.originY = pixelY;
@@ -131,6 +153,29 @@ export class PixelParticle {
   }
 
   update() {
+    this.mouseParticleDistanceX = this.mouseX - this.x;
+    this.mouseParticleDistanceY = this.mouseY - this.y;
+
+    this.mouseTotalDistance =
+      this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
+
+    this.force = (-1 * this.mouseRadius) / this.mouseTotalDistance;
+
+    const pixelIsCloseToMouse: boolean =
+      this.mouseTotalDistance < this.mouseRadius;
+    if (pixelIsCloseToMouse) {
+      this.angle = Math.atan2(
+        this.mouseParticleDistanceY,
+        this.mouseParticleDistanceX
+      );
+
+      this.vectorX = Math.cos(this.angle) * this.force;
+      this.vectorY = Math.sin(this.angle) * this.force;
+    }
+
+    this.vectorX *= this.friction;
+    this.vectorY *= this.friction;
+
     this.x += this.vectorX + (this.originX - this.x) * this.ease;
     this.y += this.vectorY + (this.originY - this.y) * this.ease;
   }

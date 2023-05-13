@@ -16,8 +16,10 @@ export class PixelEffect {
   private particlesArray: PixelParticle[];
 
   /**
-   * The pixels data of the canvas containing a `Uint8Clamped` array
-   * An array of unsigned (>=0) short (0-255) clamped integers
+   * The pixels data of the canvas containing the width, height and data of our scanned image
+   *
+   *
+   * Data is an `Uint8Clamped` array meaning an array of unsigned (>=0) 8-bit short (0-255) clamped integers
    *
    * It contains the color 4 values for each pixel using the `rgba()` model in this manner:
    * `[R,G,B,A,  R,G,B,A,  R,G,B,A...]`
@@ -46,6 +48,17 @@ export class PixelEffect {
   imageElement: HTMLImageElement;
 
   /**
+   * X coordinate of the mouse over the canvas
+   * @type {number}
+   */
+  mouseX: number;
+  /**
+   * Y coordinate of the mouse over the canvas
+   * @type {number}
+   */
+  mouseY: number;
+
+  /**
    * Creates an instance of PixelEffect.
    *
    * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
@@ -59,11 +72,48 @@ export class PixelEffect {
 
     this.particlesArray = [];
     this.imageElement = imageElement;
+
+    this.mouseX = 0;
+    this.mouseY = 0;
+
+    //We bind the `this` keyword of this method to set the mouse coordinates
+    this.setMouseCoordinates = this.setMouseCoordinates.bind(this);
+  }
+
+  /**
+   * Adds the `mousemove` event listener to get the mouse coordinates
+   *
+   * @returns {void}
+   */
+  private addMouseEventToCanvas(): void {
+    this.canvas.addEventListener("mousemove", this.setMouseCoordinates);
+  }
+
+  /**
+   * Removes the `mousemove` event listener from the canvas
+   *
+   * @returns {void}
+   */
+  private removeMouseEventFromCanvas(): void {
+    this.canvas.removeEventListener("mousemove", this.setMouseCoordinates);
+  }
+
+  /**
+   *  We set the mouse coordinates
+   *
+   * @returns {void}
+   *
+   *  @private
+   */
+  private setMouseCoordinates(event: MouseEvent): void {
+    this.mouseX = event.x;
+    this.mouseY = event.y;
   }
   /**
    * Draws the image on the canvas.
+   *  @returns {void}
    */
-  createImage() {
+  createImage(): void {
     this.context.drawImage(this.imageElement, 0, 0);
     this.pixelsData = this.context.getImageData(
       0,
@@ -71,12 +121,14 @@ export class PixelEffect {
       this.canvas.width,
       this.canvas.height
     );
-    this.convertToPixels(10);
+    this.addMouseEventToCanvas();
+    this.convertToPixels(7);
   }
   /**
    * Animates the pixels of the canvas.
+   *  @returns {void}
    */
-  animatePixels() {
+  animatePixels(): void {
     for (const particle of this.particlesArray) {
       particle.update();
       particle.draw();
@@ -87,8 +139,9 @@ export class PixelEffect {
    * Converts the canvas image to pixels.
    * @private
    * @param {number} [cellSize=1] - The size of the pixel cells.
+   *  @returns {void}
    */
-  private convertToPixels(cellSize: number = 1) {
+  private convertToPixels(cellSize: number = 1): void {
     //We remove the static image on our <canvas>
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
@@ -118,6 +171,8 @@ export class PixelEffect {
           this.context,
           this.canvas.width,
           this.canvas.height,
+          this.mouseX,
+          this.mouseY,
           x,
           y,
           color,
@@ -129,7 +184,13 @@ export class PixelEffect {
     }
   }
 
-  reset() {
+  /**
+   * Reset the prticles array and removes every event listener
+   *
+   *  @returns {void}
+   */
+  reset(): void {
     this.particlesArray = [];
+    this.removeMouseEventFromCanvas();
   }
 }

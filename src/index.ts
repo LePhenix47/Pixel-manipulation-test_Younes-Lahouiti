@@ -99,6 +99,7 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
     hideDropzone();
     showDeleteButton();
     animate();
+    showCanvas();
   } catch (fileDropError) {
     error("File drop error:", { fileDropError });
     addClass(labelDropzone, "invalid-drop");
@@ -140,6 +141,7 @@ async function handleFileUpload(event: Event): Promise<void> {
     hideDropzone();
     showDeleteButton();
     animate();
+    showCanvas();
   } catch (fileUploadError) {
     error("File upload error:", { fileUploadError });
   } finally {
@@ -208,24 +210,6 @@ function hideDropzone(): void {
 }
 
 /**
- * Shows the delete button element by removing the "hide" class.
- *
- *  @returns {void}
- */
-function showDeleteButton(): void {
-  removeClass(deleteButton, "hide");
-}
-
-/**
- * Hides the delete button element by adding the "hide" class.
- *
- *  @returns {void}
- */
-function hideDeleteButton(): void {
-  addClass(deleteButton, "hide");
-}
-
-/**
  * Shows the dropzone element by removing the "hide" class.
  *
  *  @returns {void}
@@ -257,6 +241,32 @@ function resetDropzone(): void {
 }
 
 /**
+ * Shows the delete button element by removing the "hide" class.
+ *
+ *  @returns {void}
+ */
+function showDeleteButton(): void {
+  removeClass(deleteButton, "hide");
+}
+
+/**
+ * Hides the delete button element by adding the "hide" class.
+ *
+ *  @returns {void}
+ */
+function hideDeleteButton(): void {
+  addClass(deleteButton, "hide");
+}
+
+function showCanvas() {
+  removeClass(canvas, "hide");
+}
+
+function hideCanvas() {
+  addClass(canvas, "hide");
+}
+
+/**
  * Animates the pixels on the canvas using the effect handler and requestAnimationFrame.
  *
  *  @returns {void}
@@ -274,11 +284,13 @@ function animate(): void {
 }
 
 /**
- * Cancels the animation frame request with the provided animation ID.
+ * Cancels the animation frame request with the provided animation ID
+ * and resets the particles array
  *
  *  @returns {void}
  */
 function cancelAnimation(): void {
   cancelAnimationFrame(animationId);
   effectHandler.reset();
+  hideCanvas();
 }
