@@ -99,7 +99,7 @@ export class PixelParticle {
     pixelY: number,
     pixelColor: string,
     pixelSize: number,
-    pixelGap = 0
+    pixelGap: number = 0
   ) {
     this.context = context;
     this.width = width;
@@ -130,7 +130,13 @@ export class PixelParticle {
     this.ease = Math.random() * 0.2 + 0.05;
   }
 
-  update() {}
+  update() {
+    this.x += this.vectorX + (this.originX - this.x) * this.ease;
+    this.y += this.vectorY + (this.originY - this.y) * this.ease;
+  }
 
-  draw() {}
+  draw() {
+    this.context.fillStyle = this.color;
+    this.context.fillRect(this.x, this.y, this.size, this.size);
+  }
 }

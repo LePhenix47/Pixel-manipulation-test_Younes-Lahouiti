@@ -59,21 +59,19 @@ export class PixelEffect {
 
     this.particlesArray = [];
     this.imageElement = imageElement;
-
-    this.pixelsData = this.context.getImageData(
-      0,
-      0,
-      this.canvas.width,
-      this.canvas.height
-    );
-
-    this.convertToPixels();
   }
   /**
    * Draws the image on the canvas.
    */
   createImage() {
     this.context.drawImage(this.imageElement, 0, 0);
+    this.pixelsData = this.context.getImageData(
+      0,
+      0,
+      this.canvas.width,
+      this.canvas.height
+    );
+    this.convertToPixels(10);
   }
   /**
    * Animates the pixels of the canvas.
@@ -129,5 +127,9 @@ export class PixelEffect {
         this.particlesArray.push(pixelParticle);
       }
     }
+  }
+
+  reset() {
+    this.particlesArray = [];
   }
 }

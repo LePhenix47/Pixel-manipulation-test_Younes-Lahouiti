@@ -98,6 +98,7 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
     await setImageSource(base64String);
     hideDropzone();
     showDeleteButton();
+    animate();
   } catch (fileDropError) {
     error("File drop error:", { fileDropError });
     addClass(labelDropzone, "invalid-drop");
@@ -138,6 +139,7 @@ async function handleFileUpload(event: Event): Promise<void> {
     await setImageSource(base64String);
     hideDropzone();
     showDeleteButton();
+    animate();
   } catch (fileUploadError) {
     error("File upload error:", { fileUploadError });
   } finally {
@@ -240,11 +242,18 @@ function showDropzone(): void {
  */
 function resetDropzone(): void {
   clearOldPaint(context, canvas.width, canvas.height);
-  setCanvasSize(canvas, 0, 0);
+
   imageElement.src = "";
+
   inputFileUpload.value = "";
-  showDropzone();
+
   hideDeleteButton();
+
+  cancelAnimation();
+
+  setCanvasSize(canvas, 0, 0);
+
+  showDropzone();
 }
 
 /**
@@ -271,4 +280,5 @@ function animate(): void {
  */
 function cancelAnimation(): void {
   cancelAnimationFrame(animationId);
+  effectHandler.reset();
 }
