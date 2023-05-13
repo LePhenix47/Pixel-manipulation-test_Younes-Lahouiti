@@ -177,7 +177,7 @@ function setCanvasSizeToImage(event: Event): void {
   imageMetrics.aspectRatio = width / height;
 
   setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
-  log(imageMetrics);
+  log(effectHandler);
 
   effectHandler.createImage();
 }

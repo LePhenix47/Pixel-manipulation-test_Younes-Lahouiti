@@ -1,10 +1,10 @@
 export class PixelParticle {
-  context: any;
-  width: any;
-  height: any;
-  originX: any;
-  originY: any;
-  color: any;
+  context: CanvasRenderingContext2D;
+  width: number;
+  height: number;
+  originX: number;
+  originY: number;
+  color: string;
   x: number;
   y: number;
   gap: number;
@@ -19,13 +19,13 @@ export class PixelParticle {
   friction: number;
   ease: number;
   constructor(
-    context,
-    width,
-    height,
-    pixelX,
-    pixelY,
-    pixelColor,
-    pixelSize,
+    context: CanvasRenderingContext2D,
+    width: number,
+    height: number,
+    pixelX: number,
+    pixelY: number,
+    pixelColor: string,
+    pixelSize: number,
     pixelGap = 0
   ) {
     this.context = context;
