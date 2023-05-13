@@ -87,4 +87,14 @@
 
         z-index: -1;
     }
+
+    &__delete-button {
+        background-color: var(--bg-primary);
+
+        border: 2px solid currentColor;
+        border-radius: 100vmax;
+
+        padding: 10px 20px;
+        z-index: 3;
+    }
 }

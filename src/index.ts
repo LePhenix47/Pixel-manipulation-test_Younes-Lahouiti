@@ -1,5 +1,6 @@
 import { PixelEffect } from "./utils/classes/effects/pixel-effect.class";
 import {
+  clearOldPaint,
   get2DContext,
   setCanvasSize,
 } from "./utils/functions/canvas.functions";
@@ -19,24 +20,28 @@ import {
 
 log("Hello world!");
 const inputFileUpload: HTMLInputElement = selectQuery(".index__input");
+inputFileUpload.addEventListener("change", handleFileUpload);
 
 const labelDropzone: HTMLLabelElement = selectQuery(".index__label");
 
-const imageToDraw: HTMLImageElement = selectQuery(".index__image");
+labelDropzone.addEventListener("dragover", handleDragOver);
+labelDropzone.addEventListener("dragleave", handleDragLeave);
+labelDropzone.addEventListener("drop", handleFileDrop);
+
+const imageElement: HTMLImageElement = selectQuery(".index__image");
 const imageMetrics = {
   width: 0,
   height: 0,
   aspectRatio: 0,
 };
 
+const deleteButton: HTMLButtonElement = selectQuery(".index__delete-button");
+deleteButton.addEventListener("click", resetDropzone);
+
 const canvas: HTMLCanvasElement = selectQuery(".index__canvas");
 const context: CanvasRenderingContext2D = get2DContext(canvas);
 
-inputFileUpload.addEventListener("change", handleFileUpload);
-
-labelDropzone.addEventListener("dragover", handleDragOver);
-labelDropzone.addEventListener("dragleave", handleDragLeave);
-labelDropzone.addEventListener("drop", handleFileDrop);
+let animationId: number = 0;
 
 /**
  * Updates the dropzone highlight effect when dragging over the dropzone
@@ -92,6 +97,7 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
     const base64String: string = await fileToBase64String(fileDropped);
     await setImageSource(base64String);
     hideDropzone();
+    showDeleteButton();
   } catch (fileDropError) {
     error("File drop error:", { fileDropError });
     addClass(labelDropzone, "invalid-drop");
@@ -131,6 +137,7 @@ async function handleFileUpload(event: Event): Promise<void> {
     const base64String: string = await fileToBase64String(fileUploaded);
     await setImageSource(base64String);
     hideDropzone();
+    showDeleteButton();
   } catch (fileUploadError) {
     error("File upload error:", { fileUploadError });
   } finally {
@@ -146,12 +153,12 @@ async function handleFileUpload(event: Event): Promise<void> {
  * @returns {Promise<void>} A promise that resolves when the image is loaded and the width and height are logged
  */
 async function setImageSource(base64String: string): Promise<void> {
-  imageToDraw.src = base64String;
+  imageElement.src = base64String;
 
-  imageToDraw.addEventListener("load", setCanvasSizeToImage);
+  imageElement.addEventListener("load", setCanvasSizeToImage);
 }
 
-let effectHandler = new PixelEffect(canvas, imageToDraw);
+let effectHandler = new PixelEffect(canvas, imageElement);
 
 /**
  * Sets the size of the canvas to match the dimensions of the given image
@@ -191,4 +198,41 @@ function handleWindowResize(event: Event): void {
 function hideDropzone() {
   removeClass(labelDropzone, "dragging");
   addClass(labelDropzone, "hide");
+}
+
+function showDeleteButton() {
+  removeClass(deleteButton, "hide");
+}
+
+function hideDeleteButton() {
+  addClass(deleteButton, "hide");
+}
+
+function showDropzone() {
+  removeClass(labelDropzone, "hide");
+}
+
+function resetDropzone() {
+  clearOldPaint(context, canvas.width, canvas.height);
+  setCanvasSize(canvas, 0, 0);
+  imageElement.src = "";
+  inputFileUpload.value = "";
+  showDropzone();
+  hideDeleteButton();
+}
+
+function animate() {
+  //We remove old paint
+  clearOldPaint(context, canvas.width, canvas.height);
+
+  //Insert effect here
+  effectHandler.animatePixels();
+
+  //We create our animation loop and set the animation ID
+  // in case we need to cancel the animation
+  animationId = requestAnimationFrame(animate);
+}
+
+function cancelAnimation() {
+  cancelAnimationFrame(animationId);
 }

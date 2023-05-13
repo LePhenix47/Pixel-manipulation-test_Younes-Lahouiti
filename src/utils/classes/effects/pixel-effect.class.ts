@@ -35,39 +35,43 @@ export class PixelEffect {
     }
   }
 
-  private convertToPixels(cellSize = 1) {
+  private convertToPixels(cellSize: number = 1) {
+    //We remove the static image on our <canvas>
+    this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
     for (let y = 0; y < this.pixelsData.height; y += cellSize) {
       for (let x = 0; x < this.pixelsData.width; x += cellSize) {
-        const pixelPosX = x * 4;
-        const pixelPosY = y * 4;
-        const pixelIndex = pixelPosX + pixelPosY * this.pixelsData.width;
+        const pixelPosX: number = x * 4;
+        const pixelPosY: number = y * 4;
+        const pixelIndex: number =
+          pixelPosX + pixelPosY * this.pixelsData.width;
 
-        const alpha = this.pixelsData.data[pixelIndex + 3];
+        const alpha: number = this.pixelsData.data[pixelIndex + 3];
 
-        const isTransparent = alpha <= 0;
+        const isTransparent: boolean = alpha <= 0;
         if (isTransparent) {
           continue;
         }
         // Accessing pixel values
-        const red = this.pixelsData.data[pixelIndex + 0];
-        const green = this.pixelsData.data[pixelIndex + 1];
-        const blue = this.pixelsData.data[pixelIndex + 2];
+        const red: number = this.pixelsData.data[pixelIndex + 0];
+        const green: number = this.pixelsData.data[pixelIndex + 1];
+        const blue: number = this.pixelsData.data[pixelIndex + 2];
 
         //We get an approximate value of the brightness of the pixel
-        const averageColorBrightness = red + green + blue / 3;
-        const color = `rgb(${red}, ${green}, ${blue})`;
+        const averageColorBrightness: number = red + green + blue / 3;
+        const color: string = `rgb(${red}, ${green}, ${blue})`;
 
-        // const pixelParticle = new PixelParticle(
-        //   this.context,
-        //   this.canvas.width,
-        //   this.canvas.height,
-        //   x,
-        //   y,
-        //   color,
-        //   cellSize
-        // );
+        const pixelParticle: PixelParticle = new PixelParticle(
+          this.context,
+          this.canvas.width,
+          this.canvas.height,
+          x,
+          y,
+          color,
+          cellSize
+        );
 
-        // this.particlesArray.push(pixelParticle);
+        this.particlesArray.push(pixelParticle);
       }
     }
   }
