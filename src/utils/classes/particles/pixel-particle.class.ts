@@ -144,6 +144,7 @@ export class PixelParticle {
     this.mouseParticleDistanceX = mouseX - this.x;
     this.mouseParticleDistanceY = mouseY - this.y;
 
+    //We're not going to compute the hypothenuse with `Math.sqrt()` for performance reasons
     this.mouseTotalDistance =
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
 
@@ -151,6 +152,15 @@ export class PixelParticle {
 
     const isCloseToMouse: boolean = this.mouseTotalDistance < this.mouseRadius;
     if (isCloseToMouse) {
+      /*
+                  /|
+                 / |
+                /  |
+               /   |
+              /    |
+             /     |
+            /______|
+       */
       //We have the dx and dy but NOT the hypothenuse of the triangle traced from the mouse to the particle
       //And we want to get angle of the circle on the adjacent-hypothenuse side
       this.angle = Math.atan2(
