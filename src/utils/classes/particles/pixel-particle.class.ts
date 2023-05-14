@@ -1,3 +1,5 @@
+import { log } from "../../functions/console.functions";
+
 /**
  * A class that represents a single pixel in the PixelEffect animation.
  *
@@ -152,9 +154,9 @@ export class PixelParticle {
     this.ease = Math.random() * 0.2 + 0.05;
   }
 
-  update() {
-    this.mouseParticleDistanceX = this.mouseX - this.x;
-    this.mouseParticleDistanceY = this.mouseY - this.y;
+  update(mouseX: number, mouseY: number) {
+    this.mouseParticleDistanceX = mouseX - this.x;
+    this.mouseParticleDistanceY = mouseY - this.y;
 
     this.mouseTotalDistance =
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;

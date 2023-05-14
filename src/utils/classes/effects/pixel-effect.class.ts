@@ -77,38 +77,8 @@ export class PixelEffect {
     this.mouseY = 0;
 
     //We bind the `this` keyword of this method to set the mouse coordinates
-    this.setMouseCoordinates = this.setMouseCoordinates.bind(this);
   }
 
-  /**
-   * Adds the `mousemove` event listener to get the mouse coordinates
-   *
-   * @returns {void}
-   */
-  private addMouseEventToCanvas(): void {
-    this.canvas.addEventListener("mousemove", this.setMouseCoordinates);
-  }
-
-  /**
-   * Removes the `mousemove` event listener from the canvas
-   *
-   * @returns {void}
-   */
-  private removeMouseEventFromCanvas(): void {
-    this.canvas.removeEventListener("mousemove", this.setMouseCoordinates);
-  }
-
-  /**
-   *  We set the mouse coordinates
-   *
-   * @returns {void}
-   *
-   *  @private
-   */
-  private setMouseCoordinates(event: MouseEvent): void {
-    this.mouseX = event.x;
-    this.mouseY = event.y;
-  }
   /**
    * Draws the image on the canvas.
    *  @returns {void}
@@ -121,16 +91,15 @@ export class PixelEffect {
       this.canvas.width,
       this.canvas.height
     );
-    this.addMouseEventToCanvas();
-    this.convertToPixels(7);
+    this.convertToPixels(20);
   }
   /**
    * Animates the pixels of the canvas.
    *  @returns {void}
    */
-  animatePixels(): void {
+  animatePixels(mouseX: number, mouseY: number): void {
     for (const particle of this.particlesArray) {
-      particle.update();
+      particle.update(mouseX, mouseY);
       particle.draw();
     }
   }
@@ -191,6 +160,5 @@ export class PixelEffect {
    */
   reset(): void {
     this.particlesArray = [];
-    this.removeMouseEventFromCanvas();
   }
 }

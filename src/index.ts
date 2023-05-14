@@ -18,6 +18,10 @@ import {
   getTranferedFiles,
 } from "./utils/functions/file.functions";
 
+const mouseCoords: Map<string, number> = new Map();
+mouseCoords.set("x", 0);
+mouseCoords.set("y", 0);
+
 log("Hello world!");
 const inputFileUpload: HTMLInputElement = selectQuery(".index__input");
 inputFileUpload.addEventListener("change", handleFileUpload);
@@ -34,6 +38,8 @@ const imageMetrics = {
   height: 0,
   aspectRatio: 0,
 };
+
+const main: HTMLElement = selectQuery("main");
 
 const deleteButton: HTMLButtonElement = selectQuery(".index__delete-button");
 deleteButton.addEventListener("click", resetDropzone);
@@ -181,6 +187,7 @@ function setCanvasSizeToImage(event: Event): void {
   imageMetrics.aspectRatio = width / height;
 
   setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+  main.addEventListener("mousemove", setMouseCoords);
   log(effectHandler);
 
   effectHandler.createImage();
@@ -209,6 +216,11 @@ function hideDropzone(): void {
   addClass(labelDropzone, "hide");
 }
 
+function setMouseCoords(event: MouseEvent) {
+  mouseCoords.set("x", event.x);
+  mouseCoords.set("y", event.y);
+  log(mouseCoords);
+}
 /**
  * Shows the dropzone element by removing the "hide" class.
  *
@@ -234,6 +246,8 @@ function resetDropzone(): void {
   hideDeleteButton();
 
   cancelAnimation();
+
+  main.removeEventListener("mousemove", setMouseCoords);
 
   setCanvasSize(canvas, 0, 0);
 
@@ -276,7 +290,7 @@ function animate(): void {
   clearOldPaint(context, canvas.width, canvas.height);
 
   //Insert effect here
-  effectHandler.animatePixels();
+  effectHandler.animatePixels(mouseCoords.get("x"), mouseCoords.get("y"));
 
   //We create our animation loop and set the animation ID
   // in case we need to cancel the animation
@@ -284,7 +298,7 @@ function animate(): void {
 }
 
 /**
- * Cancels the animation frame request with the provided animation ID
+ * Cancels the animation frame request with the provided animation ID, hides the canvas
  * and resets the particles array
  *
  *  @returns {void}
