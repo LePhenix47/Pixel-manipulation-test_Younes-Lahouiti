@@ -77,7 +77,7 @@ export class PixelEffect {
       this.canvas.width,
       this.canvas.height
     );
-    this.convertToPixels(20);
+    this.convertToPixels(10);
   }
   /**
    * Animates the pixels of the canvas.

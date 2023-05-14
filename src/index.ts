@@ -179,14 +179,23 @@ let effectHandler = new PixelEffect(canvas, imageElement);
  */
 function setCanvasSizeToImage(event: Event): void {
   //@ts-ignore
-  const { width, height } = event.currentTarget;
+  const { width, height }: HTMLImageElement = event.currentTarget;
 
   imageMetrics.width = width;
   imageMetrics.height = height;
 
   imageMetrics.aspectRatio = width / height;
 
-  setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+  const overflows: boolean =
+    main.clientWidth < width || main.clientHeight < height;
+  if (overflows) {
+    log("Overflows!");
+    //Add logic here to resize the imageMetrics
+    setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+  } else {
+    setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
+  }
+
   canvas.addEventListener("mousemove", setMouseCoords);
   log(effectHandler);
 
