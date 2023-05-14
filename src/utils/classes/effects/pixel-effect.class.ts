@@ -48,17 +48,6 @@ export class PixelEffect {
   imageElement: HTMLImageElement;
 
   /**
-   * X coordinate of the mouse over the canvas
-   * @type {number}
-   */
-  mouseX: number;
-  /**
-   * Y coordinate of the mouse over the canvas
-   * @type {number}
-   */
-  mouseY: number;
-
-  /**
    * Creates an instance of PixelEffect.
    *
    * @param {HTMLCanvasElement} canvas - The HTML canvas element on which the effect is applied.
@@ -72,9 +61,6 @@ export class PixelEffect {
 
     this.particlesArray = [];
     this.imageElement = imageElement;
-
-    this.mouseX = 0;
-    this.mouseY = 0;
 
     //We bind the `this` keyword of this method to set the mouse coordinates
   }
@@ -140,8 +126,6 @@ export class PixelEffect {
           this.context,
           this.canvas.width,
           this.canvas.height,
-          this.mouseX,
-          this.mouseY,
           x,
           y,
           color,

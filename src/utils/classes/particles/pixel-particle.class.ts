@@ -83,16 +83,6 @@ export class PixelParticle {
    */
   ease: number;
 
-  /**
-   * X coordinate of the mouse over the canvas
-   * @type {number}
-   */
-  mouseX: number;
-  /**
-   * Y coordinate of the mouse over the canvas
-   * @type {number}
-   */
-  mouseY: number;
   mouseRadius: number;
 
   /**
@@ -113,8 +103,6 @@ export class PixelParticle {
     context: CanvasRenderingContext2D,
     width: number,
     height: number,
-    mouseX: number,
-    mouseY: number,
     pixelX: number,
     pixelY: number,
     pixelColor: string,
@@ -125,8 +113,6 @@ export class PixelParticle {
     this.width = width;
     this.height = height;
 
-    this.mouseX = mouseX;
-    this.mouseY = mouseY;
     this.mouseRadius = 20_000;
 
     this.originX = pixelX;
@@ -163,9 +149,8 @@ export class PixelParticle {
 
     this.force = (-1 * this.mouseRadius) / this.mouseTotalDistance;
 
-    const pixelIsCloseToMouse: boolean =
-      this.mouseTotalDistance < this.mouseRadius;
-    if (pixelIsCloseToMouse) {
+    const isCloseToMouse: boolean = this.mouseTotalDistance < this.mouseRadius;
+    if (isCloseToMouse) {
       this.angle = Math.atan2(
         this.mouseParticleDistanceY,
         this.mouseParticleDistanceX

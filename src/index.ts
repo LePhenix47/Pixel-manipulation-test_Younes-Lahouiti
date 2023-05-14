@@ -187,7 +187,7 @@ function setCanvasSizeToImage(event: Event): void {
   imageMetrics.aspectRatio = width / height;
 
   setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
-  main.addEventListener("mousemove", setMouseCoords);
+  canvas.addEventListener("mousemove", setMouseCoords);
   log(effectHandler);
 
   effectHandler.createImage();
@@ -247,7 +247,7 @@ function resetDropzone(): void {
 
   cancelAnimation();
 
-  main.removeEventListener("mousemove", setMouseCoords);
+  canvas.removeEventListener("mousemove", setMouseCoords);
 
   setCanvasSize(canvas, 0, 0);
 
