@@ -89,8 +89,6 @@ export class PixelParticle {
    * @param {CanvasRenderingContext2D} context - The canvas rendering context used to draw the particle.
    * @param {number} width - The width of the canvas.
    * @param {number} height - The height of the canvas.
-   * @param {number} mouseX - The mouseX of the canvas.
-   * @param {number} mouseY - The mouseY of the canvas.
    * @param {number} pixelX - The x-coordinate of the pixel in the original image.
    * @param {number} pixelY - The y-coordinate of the pixel in the original image.
    * @param {string} pixelColor - The color of the pixel.
@@ -140,7 +138,15 @@ export class PixelParticle {
     this.ease = Math.random() * 0.2 + 0.05;
   }
 
-  update(mouseX: number, mouseY: number) {
+  /**
+   * Updates the pixel particle to go around the mouse
+   *
+   * @param {number} mouseX - The mouseX of the canvas.
+   * @param {number} mouseY - The mouseY of the canvas.
+   *
+   * @returns {void}
+   */
+  update(mouseX: number, mouseY: number): void {
     this.mouseParticleDistanceX = mouseX - this.x;
     this.mouseParticleDistanceY = mouseY - this.y;
 
@@ -179,7 +185,12 @@ export class PixelParticle {
     this.y += this.vectorY + (this.originY - this.y) * this.ease;
   }
 
-  draw() {
+  /**
+   * Draws the pixel particle in the `<canvas>`
+   *
+   * @returns {void}
+   */
+  draw(): void {
     this.context.fillStyle = this.color;
     this.context.fillRect(this.x, this.y, this.size, this.size);
   }

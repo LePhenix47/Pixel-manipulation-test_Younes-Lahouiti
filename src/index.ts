@@ -22,6 +22,8 @@ const mouseCoords: Map<string, number> = new Map();
 mouseCoords.set("x", 0);
 mouseCoords.set("y", 0);
 
+document.addEventListener("mousemove", setMouseCoords);
+
 log("Hello world!");
 const inputFileUpload: HTMLInputElement = selectQuery(".index__input");
 inputFileUpload.addEventListener("change", handleFileUpload);
@@ -196,7 +198,6 @@ function setCanvasSizeToImage(event: Event): void {
     setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
   }
 
-  canvas.addEventListener("mousemove", setMouseCoords);
   log(effectHandler);
 
   effectHandler.createImage();
@@ -255,8 +256,6 @@ function resetDropzone(): void {
   hideDeleteButton();
 
   cancelAnimation();
-
-  canvas.removeEventListener("mousemove", setMouseCoords);
 
   setCanvasSize(canvas, 0, 0);
 
