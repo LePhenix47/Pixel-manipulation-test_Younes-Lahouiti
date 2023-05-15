@@ -35,7 +35,7 @@ labelDropzone.addEventListener("dragleave", handleDragLeave);
 labelDropzone.addEventListener("drop", handleFileDrop);
 
 const imageElement: HTMLImageElement = selectQuery(".index__image");
-const imageMetrics = {
+let imageMetrics = {
   width: 0,
   height: 0,
   aspectRatio: 0,
@@ -227,8 +227,8 @@ function hideDropzone(): void {
 }
 
 function setMouseCoords(event: MouseEvent) {
-  mouseCoords.set("x", event.x);
-  mouseCoords.set("y", event.y);
+  mouseCoords.set("x", event.pageX);
+  mouseCoords.set("y", event.pageY);
   log(mouseCoords);
 }
 /**
@@ -256,6 +256,12 @@ function resetDropzone(): void {
   hideDeleteButton();
 
   cancelAnimation();
+
+  imageMetrics = {
+    width: 0,
+    height: 0,
+    aspectRatio: 0,
+  };
 
   setCanvasSize(canvas, 0, 0);
 
