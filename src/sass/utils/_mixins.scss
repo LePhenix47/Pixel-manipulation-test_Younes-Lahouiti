@@ -107,3 +107,80 @@
 
     overflow: hidden;
 }
+
+//Element speific mixins:
+
+@mixin input-range-style {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    overflow: hidden;
+
+    --track-size: 16px;
+    --bg-track: rgb(124, 213, 213);
+
+    &::-webkit-slider-runnable-track {
+
+        background-color: var(--bg-track);
+        border-radius: 3px;
+        height: var(--track-size);
+
+
+        &:hover {}
+    }
+
+    &::-moz-range-track {
+
+        background-color: var(--bg-track);
+        border-radius: 3px;
+        height: var(--track-size);
+
+
+        &:hover {}
+    }
+
+
+    --thumb-size: 12px;
+    --border-size: 3px;
+    --bg-thumb: rgb(50, 50, 123);
+
+    &::-webkit-slider-thumb {
+
+        margin-block: 2px;
+
+        -webkit-appearance: none;
+        appearance: none;
+
+        background-color: var(--bg-thumb);
+        outline: 2px solid var(--bg-thumb);
+
+        border-radius: 100vmax;
+
+
+        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px grey;
+
+        height: calc(var(--thumb-size));
+        width: calc(var(--thumb-size));
+
+        &:hover {}
+    }
+
+
+    &::-moz-range-thumb {
+        margin-block: 2px;
+
+        -webkit-appearance: none;
+        appearance: none;
+
+        background-color: var(--bg-thumb);
+
+        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px grey;
+
+
+        height: calc(1.25 * var(--thumb-size));
+        width: calc(1.25 * var(--thumb-size));
+
+        &:hover {}
+    }
+}

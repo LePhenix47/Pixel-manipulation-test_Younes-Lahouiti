@@ -197,10 +197,19 @@ function setCanvasSizeToImage(event: Event): void {
   } else {
     setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
   }
-
+  createImageOnCanvas(8);
   log(effectHandler);
+}
 
-  effectHandler.createImage();
+/**
+ * Creates an image on a canvas with the specified pixel resolution
+ * by calling the `.createImage()` of the effect handler
+ *
+ * @param {number} [pixelResolution=1] - The pixel resolution of the canvas.
+ * @returns {void}
+ */
+function createImageOnCanvas(pixelResolution: number = 1): void {
+  effectHandler.createImage(pixelResolution);
 }
 
 window.addEventListener("resize", handleWindowResize);
@@ -304,7 +313,11 @@ function animate(): void {
   clearOldPaint(context, canvas.width, canvas.height);
 
   //Insert effect here
-  effectHandler.animatePixels(mouseCoords.get("x"), mouseCoords.get("y"));
+  effectHandler.animatePixels(
+    mouseCoords.get("x"),
+    mouseCoords.get("y"),
+    20_000
+  );
 
   //We create our animation loop and set the animation ID
   // in case we need to cancel the animation
@@ -318,7 +331,16 @@ function animate(): void {
  *  @returns {void}
  */
 function cancelAnimation(): void {
-  cancelAnimationFrame(animationId);
+  cancelOnlyTheAnimation();
   effectHandler.reset();
   hideCanvas();
+}
+
+/**
+ * Function that only cancels the animation on the canvas without resetting anything
+ *
+ *  @returns {void}
+ */
+function cancelOnlyTheAnimation(): void {
+  cancelAnimationFrame(animationId);
 }

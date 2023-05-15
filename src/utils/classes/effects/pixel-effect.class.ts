@@ -61,15 +61,16 @@ export class PixelEffect {
 
     this.particlesArray = [];
     this.imageElement = imageElement;
-
-    //We bind the `this` keyword of this method to set the mouse coordinates
   }
 
   /**
-   * Draws the image on the canvas.
-   *  @returns {void}
+   * Draws the image on the canvas with a certain pixel resolution
+   *
+   * @param {number} [pixelResolution=8] - Pixel resolution of the image
+   *
+   * @returns {void}
    */
-  createImage(): void {
+  createImage(pixelResolution: number = 8): void {
     this.context.drawImage(this.imageElement, 0, 0);
     this.pixelsData = this.context.getImageData(
       0,
@@ -77,15 +78,15 @@ export class PixelEffect {
       this.canvas.width,
       this.canvas.height
     );
-    this.convertToPixels(8);
+    this.convertToPixels(pixelResolution);
   }
   /**
    * Animates the pixels of the canvas.
    *  @returns {void}
    */
-  animatePixels(mouseX: number, mouseY: number): void {
+  animatePixels(mouseX: number, mouseY: number, mouseRadius = 20_000): void {
     for (const particle of this.particlesArray) {
-      particle.update(mouseX, mouseY);
+      particle.update(mouseX, mouseY, mouseRadius);
       particle.draw();
     }
   }
@@ -109,7 +110,7 @@ export class PixelEffect {
 
         const alpha: number = this.pixelsData.data[pixelIndex + 3];
 
-        const isTransparent: boolean = alpha <= 0;
+        const isTransparent: boolean = alpha < 10;
         if (isTransparent) {
           continue;
         }

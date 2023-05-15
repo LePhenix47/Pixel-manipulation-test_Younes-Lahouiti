@@ -83,8 +83,6 @@ export class PixelParticle {
    */
   ease: number;
 
-  mouseRadius: number;
-
   /**
    * @param {CanvasRenderingContext2D} context - The canvas rendering context used to draw the particle.
    * @param {number} width - The width of the canvas.
@@ -110,8 +108,6 @@ export class PixelParticle {
     this.context = context;
     this.width = width;
     this.height = height;
-
-    this.mouseRadius = 20_000;
 
     this.originX = pixelX;
     this.originY = pixelY;
@@ -146,7 +142,7 @@ export class PixelParticle {
    *
    * @returns {void}
    */
-  update(mouseX: number, mouseY: number): void {
+  update(mouseX: number, mouseY: number, mouseRadius = 20_000): void {
     //We get the top left coordinates of our canvas
     const { x, y }: DOMRect = this.context.canvas.getBoundingClientRect();
 
@@ -157,9 +153,9 @@ export class PixelParticle {
     this.mouseTotalDistance =
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
 
-    this.force = (-1 * this.mouseRadius) / this.mouseTotalDistance;
+    this.force = (-1 * mouseRadius) / this.mouseTotalDistance;
 
-    const isCloseToMouse: boolean = this.mouseTotalDistance < this.mouseRadius;
+    const isCloseToMouse: boolean = this.mouseTotalDistance < mouseRadius;
     if (isCloseToMouse) {
       /*
                   /|

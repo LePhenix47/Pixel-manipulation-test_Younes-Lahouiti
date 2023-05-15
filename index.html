@@ -46,7 +46,7 @@
     <main class="index">
 
         <section class="index__container">
-            <label class="index__label" for="input" title="Upload or drop an image">
+            <label class="index__label index__label--dropzone" for="input" title="Upload or drop an image">
                 <svg class="index__svg no-pointer-events" xmlns="http://www.w3.org/2000/svg" data-name="Layer 1"
                     viewBox="0 0 64 64" id="upload">
                     <polyline fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="4"
@@ -60,11 +60,24 @@
                     </line>
                 </svg>
             </label>
-            <input class="index__input screen-readers-only" type="file" id="input" accept="image/*">
+            <input class="index__input index__input--file screen-readers-only" type="file" id="input" accept="image/*">
             <img class="index__image hide" src="" alt="">
 
 
             <canvas class="index__canvas hide"></canvas>
+        </section>
+        <section class="index__controls">
+            <label for="pixel-resolution" class="index__label index__label--range">
+                Pixel resolution:
+            </label>
+            <input type="range" id="pixel-resolution" class="index__input" min="1" value="13" max="25" step="1">
+
+            <label class="index__label index__label--range" for="mouse-radius">
+                Mouse radius:
+            </label>
+            <input type="range" id="mouse-radius" class="index__input" min="1" value="13" max="25" step="1">
+
+
         </section>
         <button type="button" class="index__delete-button hide">Upload another image</button>
 
