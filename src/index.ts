@@ -17,10 +17,12 @@ import {
   getInputFiles,
   getTranferedFiles,
 } from "./utils/functions/file.functions";
+import { formatSignificantDigitsNumber } from "./utils/functions/internalization.functions";
 
-const mouseCoords: Map<string, number> = new Map();
-mouseCoords.set("x", 0);
-mouseCoords.set("y", 0);
+const mouseInfos: Map<string, number> = new Map();
+mouseInfos.set("x", 0);
+mouseInfos.set("y", 0);
+mouseInfos.set("radius", 20_000);
 
 document.addEventListener("mousemove", setMouseCoords);
 
@@ -42,9 +44,31 @@ let imageMetrics = {
 };
 
 const main: HTMLElement = selectQuery("main");
+const controlsSection: HTMLElement = selectQuery(".index__controls");
 
 const deleteButton: HTMLButtonElement = selectQuery(".index__delete-button");
 deleteButton.addEventListener("click", resetDropzone);
+
+const inputRangePixelResolution: HTMLInputElement =
+  selectQuery("#pixel-resolution");
+const labelPixelResolution: HTMLLabelElement = selectQuery(
+  "label[for=pixel-resolution]"
+);
+
+const inputRangeMouseRadius: HTMLInputElement = selectQuery("#mouse-radius");
+const labelMouseRadius: HTMLLabelElement = selectQuery(
+  "label[for=mouse-radius]"
+);
+
+inputRangePixelResolution.addEventListener("input", setImageResToInputValue);
+inputRangeMouseRadius.addEventListener("input", setMouseRadius);
+
+log(
+  inputRangeMouseRadius,
+  labelPixelResolution,
+  inputRangePixelResolution,
+  labelMouseRadius
+);
 
 const canvas: HTMLCanvasElement = selectQuery(".index__canvas");
 const context: CanvasRenderingContext2D = get2DContext(canvas);
@@ -106,6 +130,7 @@ async function handleFileDrop(event: DragEvent): Promise<void> {
     await setImageSource(base64String);
     hideDropzone();
     showDeleteButton();
+    showControlInputs();
     animate();
     showCanvas();
   } catch (fileDropError) {
@@ -148,6 +173,7 @@ async function handleFileUpload(event: Event): Promise<void> {
     await setImageSource(base64String);
     hideDropzone();
     showDeleteButton();
+    showControlInputs();
     animate();
     showCanvas();
   } catch (fileUploadError) {
@@ -197,8 +223,26 @@ function setCanvasSizeToImage(event: Event): void {
   } else {
     setCanvasSize(canvas, imageMetrics.width, imageMetrics.height);
   }
-  createImageOnCanvas(8);
+  createImageOnCanvas(13);
   log(effectHandler);
+}
+
+/**
+ * Function that shows the input controls
+ *
+ * @returns {void}
+ */
+function showControlInputs(): void {
+  removeClass(controlsSection, "hide");
+}
+
+/**
+ * Function that hides the input controls
+ *
+ * @returns {void}
+ */
+function hideControlInputs(): void {
+  addClass(controlsSection, "hide");
 }
 
 /**
@@ -236,9 +280,9 @@ function hideDropzone(): void {
 }
 
 function setMouseCoords(event: MouseEvent) {
-  mouseCoords.set("x", event.x);
-  mouseCoords.set("y", event.y);
-  // log(mouseCoords);
+  mouseInfos.set("x", event.x);
+  mouseInfos.set("y", event.y);
+  // log(mouseInfos);
 }
 /**
  * Shows the dropzone element by removing the "hide" class.
@@ -265,6 +309,8 @@ function resetDropzone(): void {
   hideDeleteButton();
 
   cancelAnimation();
+
+  hideControlInputs();
 
   imageMetrics = {
     width: 0,
@@ -295,11 +341,21 @@ function hideDeleteButton(): void {
   addClass(deleteButton, "hide");
 }
 
-function showCanvas() {
+/**
+ * Shows the canvas
+ *
+ * @returns {void}
+ */
+function showCanvas(): void {
   removeClass(canvas, "hide");
 }
 
-function hideCanvas() {
+/**
+ * Hides the canvas
+ *
+ * @returns {void}
+ */
+function hideCanvas(): void {
   addClass(canvas, "hide");
 }
 
@@ -314,9 +370,9 @@ function animate(): void {
 
   //Insert effect here
   effectHandler.animatePixels(
-    mouseCoords.get("x"),
-    mouseCoords.get("y"),
-    20_000
+    mouseInfos.get("x"),
+    mouseInfos.get("y"),
+    mouseInfos.get("radius")
   );
 
   //We create our animation loop and set the animation ID
@@ -337,7 +393,7 @@ function cancelAnimation(): void {
 }
 
 /**
- * Function that only cancels the animation on the canvas without resetting anything
+ * Function that only cancels the animation on the canvas without resetting anything else
  *
  *  @returns {void}
  */
@@ -345,10 +401,30 @@ function cancelOnlyTheAnimation(): void {
   cancelAnimationFrame(animationId);
 }
 
+/**
+ * Sets the image resolution to the canvas
+ *
+ * @param {InputEvent} event - Event on the input
+ */
 function setImageResToInputValue(event: InputEvent) {
+  clearOldPaint(context, canvas.width, canvas.height);
+  //@ts-ignore
+  const inputValue: number = Number(event.target.value);
+  labelPixelResolution.textContent = `Pixel resolution: ${inputValue}px`;
+
+  log("change", inputValue);
   cancelOnlyTheAnimation();
   effectHandler.reset();
-  //@ts-ignore
-  effectHandler.createImage(event.target.value);
+
+  effectHandler.createImage(inputValue);
   animate();
+}
+function setMouseRadius(event: InputEvent) {
+  //@ts-ignore
+  const inputValue = Number(event.target.value) * 1_000;
+
+  const formattedInputValue = formatSignificantDigitsNumber(inputValue);
+  labelMouseRadius.textContent = `Mouse radius: ${formattedInputValue}`;
+
+  mouseInfos.set("radius", inputValue);
 }
