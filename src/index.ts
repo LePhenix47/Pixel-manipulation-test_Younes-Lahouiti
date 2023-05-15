@@ -421,9 +421,9 @@ function setImageResToInputValue(event: InputEvent) {
 }
 function setMouseRadius(event: InputEvent) {
   //@ts-ignore
-  const inputValue = Number(event.target.value) * 1_000;
+  const inputValue: number = Number(event.target.value) * 1_000;
 
-  const formattedInputValue = formatSignificantDigitsNumber(inputValue);
+  const formattedInputValue: string = formatSignificantDigitsNumber(inputValue);
   labelMouseRadius.textContent = `Mouse radius: ${formattedInputValue}`;
 
   mouseInfos.set("radius", inputValue);
