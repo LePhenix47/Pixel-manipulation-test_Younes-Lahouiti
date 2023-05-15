@@ -344,3 +344,11 @@ function cancelAnimation(): void {
 function cancelOnlyTheAnimation(): void {
   cancelAnimationFrame(animationId);
 }
+
+function setImageResToInputValue(event: InputEvent) {
+  cancelOnlyTheAnimation();
+  effectHandler.reset();
+  //@ts-ignore
+  effectHandler.createImage(event.target.value);
+  animate();
+}

@@ -2,7 +2,7 @@
 
 .index {
     @include center-flex-column(25px);
-    min-height: 80dvh;
+    min-height: 82.5dvh;
 
     position: relative;
 
@@ -24,6 +24,7 @@
             aspect-ratio: 1/1;
             height: inherit;
 
+            background-color: var(--bg-secondary);
             color: var(--color-secondary);
 
             border: 2px dashed currentColor;
@@ -45,6 +46,8 @@
             &.dragging {
                 color: var(--color-primary);
                 border: 2px solid currentColor;
+
+                filter: contrast(75%);
 
                 &::before {
                     content: "Drop image here";
@@ -84,6 +87,8 @@
         @include center-flex-column(25px);
 
         width: 100%;
+
+        margin-block: 25px;
     }
 
     &__image {

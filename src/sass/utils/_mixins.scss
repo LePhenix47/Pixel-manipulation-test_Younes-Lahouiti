@@ -143,7 +143,7 @@
 
     --thumb-size: 12px;
     --border-size: 3px;
-    --bg-thumb: rgb(50, 50, 123);
+    --bg-thumb: #94abb5;
 
     &::-webkit-slider-thumb {
 
@@ -158,7 +158,7 @@
         border-radius: 100vmax;
 
 
-        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px grey;
+        box-shadow: calc(-299px - var(--thumb-size)/2) 0 0 300px #66777e;
 
         height: calc(var(--thumb-size));
         width: calc(var(--thumb-size));
@@ -175,7 +175,7 @@
 
         background-color: var(--bg-thumb);
 
-        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px grey;
+        box-shadow: calc(-305px - var(--thumb-size)/2) 0 0 300px #66777e;
 
 
         height: calc(1.25 * var(--thumb-size));
