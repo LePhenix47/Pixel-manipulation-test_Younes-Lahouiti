@@ -147,8 +147,10 @@ export class PixelParticle {
    * @returns {void}
    */
   update(mouseX: number, mouseY: number): void {
-    this.mouseParticleDistanceX = mouseX - this.x;
-    this.mouseParticleDistanceY = mouseY - this.y;
+    const { x, y }: DOMRect = this.context.canvas.getBoundingClientRect();
+
+    this.mouseParticleDistanceX = mouseX - this.x - x;
+    this.mouseParticleDistanceY = mouseY - this.y - y;
 
     //We're not going to compute the hypothenuse with `Math.sqrt()` for performance reasons
     this.mouseTotalDistance =
