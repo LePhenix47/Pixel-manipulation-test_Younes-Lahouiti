@@ -227,9 +227,9 @@ function hideDropzone(): void {
 }
 
 function setMouseCoords(event: MouseEvent) {
-  mouseCoords.set("x", event.pageX);
-  mouseCoords.set("y", event.pageY);
-  log(mouseCoords);
+  mouseCoords.set("x", event.x);
+  mouseCoords.set("y", event.y);
+  // log(mouseCoords);
 }
 /**
  * Shows the dropzone element by removing the "hide" class.

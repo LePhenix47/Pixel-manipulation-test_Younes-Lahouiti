@@ -147,6 +147,7 @@ export class PixelParticle {
    * @returns {void}
    */
   update(mouseX: number, mouseY: number): void {
+    //We get the top left coordinates of our canvas
     const { x, y }: DOMRect = this.context.canvas.getBoundingClientRect();
 
     this.mouseParticleDistanceX = mouseX - this.x - x;
