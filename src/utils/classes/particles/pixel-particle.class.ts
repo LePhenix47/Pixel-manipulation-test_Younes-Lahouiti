@@ -113,9 +113,9 @@ export class PixelParticle {
     this.originY = pixelY;
     this.color = pixelColor;
 
-    const overflowsWindow: boolean =
+    const canvasOverflowsWindow: boolean =
       this.width > window.innerWidth || this.height > window.innerHeight;
-    if (overflowsWindow) {
+    if (canvasOverflowsWindow) {
       this.x = this.originX;
       this.y = this.originY;
     } else {
