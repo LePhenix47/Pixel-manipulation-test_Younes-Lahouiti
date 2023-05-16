@@ -14,7 +14,7 @@
 
 ## 1. Description
 
-Interactive Canvas Image Rain Effect is a mini project that allows users to upload an image and create a pixel rain effect on it. The project leverages HTML5 canvas and JavaScript techniques to create a unique and interactive experience for users.
+Interactive Canvas Image pixel manipulation is a mini project that allows users to upload an image and have a nice mouse raidius effect on it. The project leverages HTML5 canvas and JavaScript techniques to create a unique and interactive experience for users.
 
 ## 2. Demo
 
