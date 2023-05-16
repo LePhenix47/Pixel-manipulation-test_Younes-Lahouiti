@@ -160,6 +160,8 @@ export class PixelParticle {
     this.mouseTotalDistance =
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
 
+    //Because we're not properly computing the hypotenuse,
+    // we make the mouse radius value very high
     this.force = (-1 * mouseRadius) / this.mouseTotalDistance;
 
     const isCloseToMouse: boolean = this.mouseTotalDistance < mouseRadius;
