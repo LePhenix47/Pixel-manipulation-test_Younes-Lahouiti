@@ -113,8 +113,15 @@ export class PixelParticle {
     this.originY = pixelY;
     this.color = pixelColor;
 
-    this.x = Math.random() * this.width;
-    this.y = Math.random() * this.height;
+    const overflowsWindow: boolean =
+      this.width > window.innerWidth || this.height > window.innerHeight;
+    if (overflowsWindow) {
+      this.x = this.originX;
+      this.y = this.originY;
+    } else {
+      this.x = Math.random() * this.width;
+      this.y = Math.random() * this.height;
+    }
 
     this.gap = pixelGap;
 

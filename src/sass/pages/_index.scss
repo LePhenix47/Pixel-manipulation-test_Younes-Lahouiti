@@ -119,15 +119,10 @@
         background-color: var(--bg-primary);
 
         border: 2px solid currentColor;
-        border-top: none;
-        border-radius: 0 0 0 10px;
+        border-radius: 100vmax;
 
         padding: 10px 20px;
 
         z-index: 3;
-
-        position: absolute;
-        top: 0;
-        right: 0;
     }
 }
