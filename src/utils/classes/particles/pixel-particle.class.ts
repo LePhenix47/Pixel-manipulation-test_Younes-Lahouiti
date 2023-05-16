@@ -1,4 +1,5 @@
 import { log } from "../../functions/console.functions";
+import { getRandomNumber } from "../../functions/number.functions";
 
 /**
  * A class that represents a single pixel in the PixelEffect animation.
@@ -119,8 +120,8 @@ export class PixelParticle {
       this.x = this.originX;
       this.y = this.originY;
     } else {
-      this.x = Math.random() * this.width;
-      this.y = Math.random() * this.height;
+      this.x = getRandomNumber(0, this.width);
+      this.y = getRandomNumber(0, this.height);
     }
 
     this.gap = pixelGap;
