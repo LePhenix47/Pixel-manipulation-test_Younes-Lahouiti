@@ -161,9 +161,7 @@ export class PixelParticle {
       this.mouseParticleDistanceX ** 2 + this.mouseParticleDistanceY ** 2;
 
     //Because we're not properly computing the hypotenuse,
-    // we make the mouse radius value very high
-    this.force = (-1 * mouseRadius) / this.mouseTotalDistance;
-
+    //the mouse radius value must be high
     const isCloseToMouse: boolean = this.mouseTotalDistance < mouseRadius;
     if (isCloseToMouse) {
       /*
@@ -181,6 +179,8 @@ export class PixelParticle {
         this.mouseParticleDistanceY,
         this.mouseParticleDistanceX
       );
+
+      this.force = (-1 * mouseRadius) / this.mouseTotalDistance;
 
       this.vectorX = Math.cos(this.angle) * this.force;
       this.vectorY = Math.sin(this.angle) * this.force;
