@@ -1,9 +1,9 @@
 {
-  "name": "25.-interactive-image-rain",
+  "name": "25.pixel-manipulation-1",
   "author": "Younes LAHOUITI",
   "version": "1.0.0",
-  "description": "This is an interactive canvas that applies a pixel rain effect to an uploaded image, drawing it onto the canvas.",
-  "main": "index.js",
+  "description": "This is an interactive canvas that applies a pixel manipulation effect to an uploaded image, drawing it onto the canvas.",
+  "main": "dist/index.js",
   "scripts": {
     "sass": "sass --watch ./sass/main.scss:./dist/style.css --style compressed",
     "ts": "tsc --watch",
